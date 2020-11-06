@@ -1,3 +1,8 @@
+# 0. Explication
+
+Ce README retrace l'intégralité du projet et permet de recréer le projet depuis 0 à partir du projet de base donnée.
+
+Toutes les étapes sont décrites à la suite de ce document.
 
 # 1. Introduction
 
