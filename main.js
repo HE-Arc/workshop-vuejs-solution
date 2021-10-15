@@ -1,4 +1,27 @@
-Vue.component('product-display', {
+const app = Vue.createApp({
+  data() {
+    return {
+      order: 'Commander du café',
+      brand: 'Nespresso',
+      description: 'L’histoire de NESPRESSO est celle d’une passion inaltérable pour la perfection et d’une quête inlassable d’innovation en faveur de la plus haute qualité.',
+      url: 'https://www.nespresso.com/ch/fr/',
+      cart: [],
+      premium: true,
+    }
+  },
+  methods: { 
+    updateCart(id) {
+      this.cart.push(id)
+    }
+  },
+  computed: {
+    title() {
+      return this.order + ' ' + this.brand
+    },
+  }
+});
+
+app.component('product-display', {
   props: {
     premium: {
       type: Boolean,
@@ -9,42 +32,40 @@ Vue.component('product-display', {
   /*html*/
   `
   <div>
-    <div>
-      <img height="200"
-        v-bind:src="image"
-        :class="[ inStock ? '' : 'out-of-stock-img' ]">
-    </div>
+    <img height="200"
+      v-bind:src="image"
+      :class="[ inStock ? '' : 'out-of-stock-img' ]">
+  </div>
 
-    <div>
-      <span v-for="(carouselImage, index) in carouselImages"
-      :key="carouselImage.id"
-      @mouseover="updateSelectedImage(index)">
-      <img height="50"
-        :src="carouselImage.image"
-        :alt="carouselImage.text">
-      </span>
-    </div>
+  <div>
+    <span v-for="(carouselImage, index) in carouselImages"
+    :key="carouselImage.id"
+    @mouseover="updateSelectedImage(index)">
+    <img height="50"
+      :src="carouselImage.image"
+      :alt="carouselImage.text">
+    </span>
+  </div>
 
-    <p v-if="stock > 10">Disponible</p>
-    <p v-else-if="stock <= 10 && stock > 0">Peu de stock</p>
-    <p v-else>Plus de stock</p>
+  <p v-if="stock > 10">Disponible</p>
+  <p v-else-if="stock <= 10 && stock > 0">Peu de stock</p>
+  <p v-else>Plus de stock</p>
 
-    <product-details :details="details"></product-details>
+  <product-details :details="details"></product-details>
 
-    <p>Shipping: {{ shipping }}</p>
+  <p>Shipping: {{ shipping }}</p>
 
-    <button
-      @click="addToCart"
-      :style="styles.roundButton"
-      :disabled="!inStock"
-      :class="{ disabledButton: !inStock }">
-      Ajouter au panier
-    </button>
+  <button
+    @click="addToCart"
+    :style="styles.roundButton"
+    :disabled="!inStock"
+    :class="{ disabledButton: !inStock }">
+    Ajouter au panier
+  </button>
 
-    <div class="col-6 offset-3">
-      <review-list v-if="reviews.length" :reviews="reviews"></review-list>
-      <review-form @review-submitted="addReview"></review-form>
-    </div>
+  <div class="col-6 offset-3">
+    <review-list v-if="reviews.length" :reviews="reviews"></review-list>
+    <review-form @review-submitted="addReview"></review-form>
   </div>
   `,
   data() {
@@ -125,7 +146,7 @@ Vue.component('product-display', {
   }
 })
 
-Vue.component('product-details', {
+app.component('product-details', {
   props: {
     details: {
       type: Array,
@@ -150,7 +171,7 @@ Vue.component('product-details', {
   computed: { }
 })
 
-Vue.component('review-form', {
+app.component('review-form', {
   template:
   /*html*/
   `
@@ -208,7 +229,7 @@ Vue.component('review-form', {
   }
 })
 
-Vue.component('review-list', {
+app.component('review-list', {
   props: {
     reviews: {
       type: Array,
@@ -218,44 +239,20 @@ Vue.component('review-list', {
   template:
   /*html*/
   `
-  <div>
-    <h3>Messages :</h3>
+  <h3>Messages :</h3>
 
-    <div class="card mb-3" v-for="(review, index) in reviews" :key="index">
-      <h5 class="card-header">
-        {{ review.name }} à noté ça {{ review.rating }} étoiles
-      </h5>
+  <div class="card mb-3" v-for="(review, index) in reviews" :key="index">
+    <h5 class="card-header">
+      {{ review.name }} à noté ça {{ review.rating }} étoiles
+    </h5>
 
-      <div class="card-body">
-        <p class="card-text">
-          {{ review.review }}
-        </p>
-      </div>
+    <div class="card-body">
+      <p class="card-text">
+        {{ review.review }}
+      </p>
     </div>
   </div>
   `
 })
 
-var app = new Vue({
-  el: '#app',
-  data() {
-    return {
-      order: 'Commander du café',
-      brand: 'Nespresso',
-      description: 'L’histoire de NESPRESSO est celle d’une passion inaltérable pour la perfection et d’une quête inlassable d’innovation en faveur de la plus haute qualité.',
-      url: 'https://www.nespresso.com/ch/fr/',
-      cart: [],
-      premium: true,
-    }
-  },
-  methods: { 
-    updateCart(id) {
-      this.cart.push(id)
-    }
-  },
-  computed: {
-    title() {
-      return this.order + ' ' + this.brand
-    },
-  }
-})
+app.mount('#app'); // Vue Instance - Root component
