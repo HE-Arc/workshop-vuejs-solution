@@ -8,22 +8,17 @@ Toutes les étapes sont décrites à la suite de ce document.
 
 ## Github base project
 
-https://github.com/SpicyPaper/workshop-vuejs-simple-demo
+https://github.com/HE-Arc/workshop-vuejs-simple-demo
 
-HTTPS
 ```git
-git clone https://github.com/SpicyPaper/workshop-vuejs-simple-demo.git
+git clone git@github.com:HE-Arc/workshop-vuejs-simple-demo.git
 ```
-
-SSH
-```git
-git clone git@github.com:SpicyPaper/workshop-vuejs-simple-demo.git
-```
-
 
 ## Vue Devtools
 
-Installer Vue Devtools à partir d'ici : https://github.com/vuejs/vue-devtools#vue-devtools
+Installer Vue Devtools à partir d'ici : https://devtools.vuejs.org/guide/installation.html
+
+**ATTENTION** pour l'instant il faut utiliser la verison beta qui est compatible avec Vue3
 
 Vue Devtools permet de visualiser la structure et les données de l'application.
 Se qu'il se passe dans l'application et dans chaque composants.
@@ -38,7 +33,7 @@ Si VSCode est utilisé installer `es6-string-html`, nous en aurons besoin plus t
 Copier coller le CDN Vue sur la page de Vue 2 dans la balise head de l'html, nous utiliserons un version précise, donc voici le CDN pour cette version.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://unpkg.com/vue@3.2.20"></script>
 ```
 
 # 2. Creating the Vue App
@@ -49,7 +44,15 @@ Dans l'html avoir un div avec `id="app"`.
 Et donc dans `main.js` on peut créer notre application Vue.
 
 ```js
-var app = new Vue({})
+const app = Vue.createApp({});
+```
+
+Il faut ensuite relié l'app VueJS à l'élément HTML avec l'id app.
+
+```html
+<script>
+  const mountedApp = app.mount('#app');
+</script>
 ```
 
 ## Expression {{}}
@@ -60,21 +63,21 @@ Il faut donc créer une variable Vue dans data et l'utiliser dans l'html à l'ai
 > ES6 syntaxe : `data: function() {}` --> `data() {}`
 
 ```js
-var app = new Vue({
-  data() {
+const app = Vue.createApp({
+  data: function() {
     return {
       title: 'Achat de café Nespresso',
     }
   }
-})
+});
 ```
 
 > {{}} interprète se qui se trouve dedans, cela permet d'effectuer des opérations en tout genre (concaténation, opération ternaire, etc...)
 
-Il est possible d'interagir avec Vue depuis la console en écrivant par exemple 
+Il est possible d'interagir avec Vue depuis la console du navigateur en écrivant par exemple 
 
 ```js
-app.title = "Ceci est un titre différent"
+mountedApp.title = "Ceci est un titre différent"
 ```
 
 ## Challenge
@@ -90,19 +93,19 @@ Ajoutons une image grâce à ce concept.
 Il faut créer une nouvelle var dans data et ensuite l'utiliser dans l'html.
 
 ```html
-<img v-bind:src="image">
+<img height="200" v-bind:src="image">
 ```
 
-> Raccourci pour v-bind : "v-bind:src" --> ":src"
+> Raccourci pour v-bind : `v-bind:src` --> `:src`
 
 ## Challenge
 
-Ajouter un lien sur le titre en utilisant le binding et `href`.
+Ajouter un lien sur le titre en utilisant le binding et `href` de l'élément `<a>`.
 
 # 4. Conditional Rendering
 
 ## v-if et v-else
-`v-if` et `v-else` permettent d'afficher des choses différentes en fonction de la condition
+`v-if` et `v-else` permettent d'afficher des choses différentes en fonction de la condition.
 
 Ajoutons un booléen dans data `inStock` et utilisons le pour afficher un message différent à l'utilisateur en fonction de sa valeur.
 
@@ -157,7 +160,7 @@ Puis l'utiliser dans l'html.
 
 ## :key
 
-Il est recommandé de donner une `:key` pour chaque élément de la liste, cela permet de donner un id unique à chaque élément du DOM et permet ainsi à Vue de suivre tous les éléments lorsque le DOM est modifié. Le résultat est l'améliorer des performances et cela peut s'avérer très utile par la suite, lors de l'utilisation des animations. Autant appliquer la bonne pratique dès le départ.
+Il est recommandé de donner une `:key` pour chaque élément de la liste, cela permet de donner un id unique à chaque élément du DOM et permet ainsi à Vue de suivre tous les éléments lorsque le DOM est modifié. Le résultat est l'amélioration des performances et cela peut s'avérer très utile par la suite, lors de l'utilisation des animations. Autant appliquer la bonne pratique dès le départ.
 
 Il faut donc créer des tableau d'objets.
 Créons un nouveau tableau contenant des textes avec un id dans data.
@@ -213,6 +216,13 @@ Puis ajouter un bouton dans l'html en y ajoutant la directive `v-on` et en incr�
 ```
 > Il existe une syntaxe plus courte pour `v-on`, il s'agit du `@` donc par exemple `v-on:click` donnera `@click`
 
+Ajoutons également un peu d'HTML pour afficher la valeur du panier sur notre page.
+```html
+<div>
+  Panier({{ cart }})
+</div>
+```
+
 Ici nous avons effectué l'opération directement dans l'html car notre opération est simple. Dans le cas ou nous souhaitons effectué plusieurs actions il est largement préférable d'utiliser des méthodes. Cela tombe bien car Vue permet de faire cela.
 
 ## methods
@@ -223,10 +233,6 @@ Pour se faire ajoutons l'élément `methods` à notre app Vue dans notre code JS
 data() {
 },
 methods: {
-  method1: function() {
-  },
-  method2: function() {
-  }
 }
 ```
 
@@ -237,6 +243,7 @@ methods: {
   addToCart: function() {
     this.cart += 1
   },
+}
 ```
 
 > `this.cart` fait référence à la var `cart` dans data
@@ -253,27 +260,27 @@ carouselImages: [
   {
     id: 1,
     text: 'Capsule 1',
-    image: './images/colombia.png',
+    image: './assets/images/colombia.png',
   },
   {
     id:  2,
     text: 'Capsule 2',
-    image: './images/colombia_de_cote.png',
+    image: './assets/images/colombia_de_cote.png',
   },
   {
     id: 3,
     text: 'Tasse',
-    image: './images/colombia_tasse.png',
+    image: './assets/images/colombia_tasse.png',
   },
   {
     id: 4,
     text: 'Paquet',
-    image: './images/colombia_paquet.png',
+    image: './assets/images/colombia_paquet.png',
   }
 ],
 ```
 
-Ensuite nous pouvons modifier notre html comme ceci afin d'afficher une image en dessous de l'image principale. Il ne nous reste plus qu'à ajouter la directive `@mouseover` et la relier à une méthode `updateImage` dans data qui va changer la valeur de la var `image`
+Ensuite nous pouvons modifier notre html comme ceci afin d'afficher les images en dessous de l'image principale. Il ne nous reste plus qu'à ajouter la directive `@mouseover` et la relier à une méthode `updateImage` dans data qui va changer la valeur de la var `image`
 
 ```html
 <div>
@@ -319,7 +326,7 @@ details: [
 ```
 
 Dans l'html il faut donc adapter son utilisation.
-Pour se qui est de clé, ce n'est pas nouveau et il faut également adapter l'utilisation de l'affichage du texte en appelant la propriété de l'objet.
+Relier l'attribut id à l'élément `key` et il faut également adapter l'utilisation de l'affichage du texte en appelant la propriété de l'objet.
 Au niveau du style il suffit d'utiliser `:style` en utilisant l'attribut `color` de `detail` et en le liant à l'attribut css `color`.
 
 ```html
@@ -342,7 +349,7 @@ Il y a 2 manières possible d'utiliser les attributs css
 
 Il est également possible d'utiliser un objet de style, changeons le style du bouton d'ajout au panier pour illustrer l'exemple :
 
-Dans le JS on crée un objet qui va regrouper tous nos style.
+Dans le JS on crée un objet qui va regrouper tous nos style et on crée un nouvel object pour le bouton qui contiendra tout ses styles.
 ```js
 styles: {
   roundButton: {
@@ -355,7 +362,7 @@ styles: {
 },
 ```
 
-Dans l'html on ajoute `:style` au bouton. Mais cette fois il suffit d'ajouter notre objet avec un notation bien plus simple car tous les styles sont déjà contenu dans l'objet JS déjà correctement formaté.
+Dans l'html on ajoute `:style` au bouton. Mais cette fois il suffit d'ajouter notre objet avec une notation bien plus simple car tous les styles sont déjà contenu dans l'objet JS déjà correctement formaté.
 ```html
 <button
   @click="addToCart"
@@ -368,7 +375,7 @@ Dans l'html on ajoute `:style` au bouton. Mais cette fois il suffit d'ajouter no
 
 Essayons de voir la différence si on utilise les classes css.
 
-Désactivons les interactions avec notre bouton si le stock est <= 0 en utilisant l'attribut `disabled`.
+Commençons par désactiver les interactions avec notre bouton si le stock est <= 0 en utilisant l'attribut `disabled`.
 ```html
 <button
   @click="addToCart"
@@ -378,7 +385,7 @@ Désactivons les interactions avec notre bouton si le stock est <= 0 en utilisan
 </button>
 ```
 
-Rendons le tout un peu plus clair visuellement en ajoutant du css. Ne pas oublier `!important` sur nos attributs css, car nous modifions dans une classe le style ajouté depuis l'élément html.
+Rendons le tout un peu plus clair visuellement en ajoutant du css.
 ```css
 .disabledButton {
   background-color: #d8d8d8 !important;
@@ -386,15 +393,33 @@ Rendons le tout un peu plus clair visuellement en ajoutant du css. Ne pas oublie
 }
 ```
 
-> Il est possible d'utiliser l'attribut `class` et `:class` sur le même élément html, les classes vont être fusionné
+> Ne pas oublier `!important` sur nos attributs css, car nous modifions le style ajouté depuis l'élément html en inline depuis une classe (priorité : `!important` > style (inline) > classe).
+
+```html
+<button
+  @click="addToCart"
+  :style="styles.roundButton"
+  :disabled="stock <= 0"
+  :class="{ disabledButton: stock <= 0 }">
+  Ajouter au panier
+</button>
+```
+
+> Il est possible d'utiliser l'attribut `class` et `:class` sur le même élément html, les classes vont être fusionnées
 
 ## Opérateur ternaire [ ? : ]
 
-Il est également possible d'effectuer des opérations ternaires. Modifions le style du texte indiquant combien de 
+Il est également possible d'effectuer des opérations ternaires. Modifions le style du texte indiquant combien d'articles se trouvent dans le panier.
 ```html
 <div :class="[cart > 0 ? 'cartFilled' : '']">
   Panier({{ cart }})
 </div>
+```
+
+```css
+.cartFilled {
+  color: rgb(17, 100, 0);
+}
 ```
 
 ## Challenge
@@ -407,18 +432,18 @@ Vue permet de créer des propriétés calculées.
 
 ## Cache
 
-Cela présente des avantages, comme le fait que les propriétés calculées sont mises en cachent. Cela veut dire que la propriété est "calculé" une seule fois et ensuite simplement réutilisé (optimisation de la part de Vue), si un élément de cette propriété à changé alors la propriété est calculé à nouveau puis remise en cache.
+Cela présente des avantages, comme le fait que les propriétés calculées soient mises en cachent. Cela veut dire que la propriété est "calculée" une seule fois et ensuite simplement réutilisée (optimisation de la part de Vue), si un élément de cette propriété à changé alors la propriété est calculée à nouveau puis remise en cache.
 
 ## Exemple simple avec le titre
 
 Afin de tester cette nouvelle notion nous allons couper le contenu de notre variable `title` en 2 dans data.
 ```js
-order:  'Commander du café',
+action:  'Achat de café',
 brand:  'Nespresso',
 ```
 
-Mais souhaitons continuer d'utiliser la var `title` dans l'html afin de pouvoir utiliser title, order ou brand quand cela est nécessaire.
-Nous allons donc créer un propriété calculée et pour se faire il faut ajouter le terme `computed` au même niveau que data et methods dans le JS.
+Mais nous souhaitons continuer d'utiliser la var `title` dans l'html afin de pouvoir utiliser title, action ou brand quand cela est nécessaire.
+Nous allons donc créer une propriété calculée et pour se faire il faut ajouter le terme `computed` au même niveau que data et methods dans le JS.
 Ensuite nous pouvons créer notre propriété calculée que nous allons nommé `title` afin que son fonctionnement reste identique ou nous l'avions utilisé précédemment.
 
 ```js
@@ -426,7 +451,7 @@ data() { ... },
 methods: { ... },
 computed: {
   title() {
-    return this.order + ' ' + this.brand
+    return this.action + ' ' + this.brand
   }
 }
 ```
@@ -434,14 +459,14 @@ computed: {
 ## Amélioration du carrousel
 
 Maintenant nous allons simplifier et mettre à profit notre apprentissage des propriétés.
-Supprimons la var `image = 'url'` dans data et remplaçons la par `selectedImage = 0` qui sera un index pointant sur l'image actuellement sélectionné de notre carrousel.
+Supprimons la var `image = 'url'` dans data et remplaçons la par `selectedImage = 0` qui sera un index pointant sur l'image actuellement sélectionnée de notre carrousel.
 
-Ensuite modifions l'appel de la méthode pour mettre cette variable à jour. D'abord dans la boucle for du carrousel ajoutons un index comme ceci `v-for="(carouselImage, index) in carouselImages"`. Puis l'appel à la méthode `@mouseover="updateSelectedImage(index)"` et la méthode dans le JS `updateSelectedImage(index) { this.selectedImage = index }`.
+Ensuite modifions l'appel de la méthode pour mettre cette variable à jour. D'abord dans la boucle `for` du carrousel ajoutons un index comme ceci `v-for="(carouselImage, index) in carouselImages"`. Puis l'appel à la méthode `@mouseover="updateSelectedImage(index)"` et la méthode dans le JS `updateSelectedImage(index) { this.selectedImage = index }`.
 Et pour finir créons une nouvelle propriété calculée afin de remplacer la variable image d'avant `image() { return this.carouselImages[this.selectedImage].image }`.
 
 ## Challenge
 
-Remplacer tous les endroits ou nous avons utilisé `stock <= 0` par un propriété calculée. (Attention au condition qui risque de s'inverser dans certain des cas)
+Remplacer tous les endroits ou nous avons utilisé `stock <= 0` par une propriété calculée. (Attention aux conditions qui risque de s'inverser dans certain des cas)
 
 # 9. Components & Props
 
@@ -450,46 +475,36 @@ Les composants sont des éléments très important à comprendre et à utiliser.
 ## Premier composant
 
 Nous allons maintenant créer notre premier composant nommé `ProductDisplay.js` dans `main.js`.
-> Pour l'instant nous allons écrire tous les composants dans le fichier `main.js` et utiliser l'extension `es6-string-html` pour VSCode que nous avons téléchargé au début, car cela nous permet de comprendre les bases de se qu'est un composant, mais c'est une méthode temporaire. Cela nous permet d'utiliser la notion de composant sans trop modifier la structure de notre projet actuel. Par la suite nous utiliserons des fichier Vue, suivre ce lien pour plus d'information concernant ces fichiers : https://vuejs.org/v2/guide/single-file-components.html
+> Pour l'instant nous allons écrire ce composant dans le fichier `main.js` et utiliser l'extension `es6-string-html` pour VSCode que nous avons téléchargé au début, car cela nous permet de comprendre les bases de se qu'est un composant, mais c'est une méthode temporaire. Cela nous permet d'utiliser la notion de composant sans trop modifier la structure de notre projet actuel.
 
 Créons la structure de base de ce composant
 Il faut ajouter un nouveau composant à notre `app` Vue, créé dans `main.js`, puis lui ajouter la section `template` qui contiendra l'html et les sections `data()`, `methods` et `computed` comme dans `main.js`.
 > L'extension `es6-string-html` permet de mettre `/*html*/` juste en dessous de `template` et permet ainsi d'avoir la couleur syntaxique pour notre HTML, plus cool à lire :)
 
 ```js
-Vue.component('product-display', {
+const app = Vue.createApp({
+  ...
+});
+
+app.component('product-display', {
   template: 
   /*html*/
   `
-  <div>
-  </div>
   `,
   data() {
     return {
-    },
+    }
   },
   methods: {
   },
   computed: {
   }
-})
-
-var app = new Vue({
-  ...
-})
+});
 ```
 
 Il faut ensuite copier l'HTML qui est en lien direct avec ce composant et qui se trouve pour l'instant dans le fichier `index.html` (tout prendre sauf titre et panier).
 
-**ATTENTION** : l'HTML dans template doit absolument n'avoir qu'une seule balise parente. Par exemple un div qui englobe tout le reste du code HTML.
-
-Puis copier le JS qui est en lien direct avec ce composant et qui se trouve pour l'instant dans le fichier `main.js` (tout prendre sauf se qui est en lien avec le titre et le panier : `order`, `brand`, `url`, `cart`, `title()`).
-
-On peut ensuite importer notre composant dans `index.html` sous l'importation de `main.js`.
-
-```html
-<script src='./components/ProductDisplay.js'></script>
-```
+Puis copier le JS qui est en lien direct avec ce composant et qui se trouve pour l'instant dans le fichier `main.js` (tout prendre sauf se qui est en lien avec le titre et le panier : `action`, `brand`, `url`, `cart`, `title()`).
 
 Nous pouvons maintenant utiliser notre composant dans l'HTML comme une nouvelle balise. Ajoutons notre composant sous le titre, comme avant.
 
@@ -501,9 +516,9 @@ Pour montrer la puissance de Vue on peut juste essayer de copier coller plusieur
 
 ## Les PROPS
 
-Ajoutons maintenant une nouvelle fonctionnalité afin de tester les props des composants. Nous voulons savoir si l'utilisateur est prémium et effectué quelque chose en fonction de sa valeur.
+Ajoutons maintenant une nouvelle fonctionnalité afin de tester les props des composants. Nous voulons savoir si l'utilisateur est prémium et effectué quelque chose en fonction de cette valeur.
 
-Dans `main.js` il faut ajouter une var dans data nommé `premium` à `true` ou `false`.
+Dans `main.js` il faut ajouter une var dans data nommée `premium` à `true` ou `false`.
 
 Ensuite il faut l'envoyer au composant depuis l'HTML.
 
@@ -516,7 +531,7 @@ Puis il faut permettre au composant de réceptionner et utiliser cette variable 
 La props peut avoir plusieurs paramètres comme `type`, `required`, `default`, etc.
 
 ```js
-Vue.component('product-display', {
+app.component('product-display', {
   props: {
     premium: {
       type: Boolean,
@@ -527,7 +542,7 @@ Vue.component('product-display', {
   /*html*/
 ```
 
-Il faut ensuite créer une propriété calculée `shipping()` dans le composant afin d'utiliser cette prop.
+Nous pouvons maintenant créer une propriété calculée `shipping()` dans le composant afin d'utiliser cette prop.
 
 ```js
 shipping() {
@@ -543,6 +558,14 @@ Et enfin utilisons cette propriété calculée dans le composant en dessous des 
 
 ```html
 <p>Shipping: {{ shipping }}</p>
+```
+
+Maintenant que notre composant fonctionne nous allons lui créer un fichier pour essayer de structure un peu mieux notre projet.
+Créer un dossier à la racine nommé `components`, dans ce dossier créer un nouveau fichier nommé `ProductDisplay.js` et déplacer tout le code du composant de `main.js`.
+On peut ensuite importer notre composant dans `index.html` sous l'importation de `main.js`.
+
+```html
+<script src='./components/ProductDisplay.js'></script>
 ```
 
 ## Challenge
@@ -565,9 +588,17 @@ Commençons en allant dans `ProductDisplay.js` en modifiant le contenu de la mé
 this.$emit('add-to-cart')
 ```
 
+Il faut aussi indiquer le nouvel emit en haut du composant après propos.
+
+```js
+emits: ["add-to-cart"],
+```
+
 ## Recevoir
 
-Il nous faut donc réceptionner l'événement en ajoutant une directive `v-on` ou `@` à notre déclaration de `product-display` dans `index.html`. `@add-to-cart` peut donc effectuer quelque chose une fois l'événement réceptionné et dans notre cas nous allons appeler une méthode `updateCart` dans `main.js` qui va incrémenter `cart` à chaque clique.
+Il nous faut donc réceptionner l'événement en ajoutant une directive `v-on` ou `@` à notre déclaration de `product-display` dans `index.html`.
+
+`@add-to-cart` peut donc effectuer quelque chose une fois l'événement réceptionné et dans notre cas nous allons appeler une méthode `updateCart` dans `main.js` qui va incrémenter `cart` à chaque clique.
 
 ```js
 updateCart() {
@@ -581,9 +612,9 @@ updateCart() {
 
 ## Ajoutons des paramètres
 
-Il est également possible d'envoyer des paramètres au travers d'événement, modifions un peu notre code pour que le bouton ajouter nous envoyer l'index de l'image au moment de l'ajout de l'utilisateur. Cela nous permettra de savoir quand l'utilisateur à appuyer sur le bouton.
+Il est également possible d'envoyer des paramètres au travers d'événement, modifions un peu notre code pour que le bouton ajouter nous envoyer l'index de l'image au moment de l'ajout de l'utilisateur. Cela nous permettra de savoir quand l'utilisateur à appuyer sur le bouton et ainsi d'en connaitre l'image décisive.
 
-Il donc tout d'abord modifier notre var `cart` dans data pour accepter plusieurs entrer en le transformant en tableau.
+Il faut tout d'abord modifier notre var `cart` dans data pour accepter plusieurs entrer en le transformant en tableau.
 
 ```js
 cart: []
@@ -630,8 +661,8 @@ Et ajouter la classe `col-8` au titre, `col-4` au panier et `col-12` sur un `div
 
 Nous allons maintenant créer un nouveau composant `review-form` à partir du modèle suivant.
 
-```html
-Vue.component('review-form', {
+```js
+app.component('review-form', {
   template:
   /*html*/
   `
@@ -668,7 +699,7 @@ Vue.component('review-form', {
   },
   methods: {
   }
-})
+});
 ```
 
 Ajoutons maintenant 3 var qui stockerons les valeurs des champs de notre formulaire.
@@ -718,6 +749,12 @@ onSubmit() {
 }
 ```
 
+Et indiquer le nouvel emit après props.
+
+```js
+emits: ["review-submitted"],
+```
+
 ## Recevoir
 
 Ajoutons le composant dans `index.html` et utilisons le dans `product-display`. On peut directement ajouter la directive `@` permettant de récupérer l'objet envoyé par le formulaire. (Ajouter un peu de bootstrap aussi)
@@ -746,8 +783,8 @@ addReview(review) {
 
 On peut maintenant créer un nouveau composant `review-list` capable d'afficher les messages à partir de ce modèle.
 
-```html
-Vue.component('review-list', {
+```js
+app.component('review-list', {
   props: {
   },
   template:
@@ -765,7 +802,7 @@ Vue.component('review-list', {
     </div>
   </div>
   `
-})
+});
 ```
 
 Il faut créer une prop qui réceptionnera nos messages.
@@ -795,6 +832,8 @@ Ensuite on itère sur tous les éléments du tableau au bon endroit dans le comp
 </div>
 ```
 
+Ajouter un `v-if` sur le composant afin de l'afficher uniquement si au moins une review a été réalisée.
+
 ## Challenge
 
 Ajouter une question à `review-form` : "Recommanderiez vous ce café ?". Enregistrer et émettre la réponse, et l'afficher dans `review-list`.
@@ -807,7 +846,7 @@ Cette application nous à permit de comprendre les concepts de Vue.js, en princi
 
 Également la manière de créer les composants et l'architecture générale de ce projet n'est pas bonne. Cette structure et la manière dont ce projet est organisé permet simplement de se concentrer sur les conceptes fondamentaux de Vue.js, sans se préoccuper de la structure, etc.
 
-Le site de Vue expose toutes les possibilités d'installation et les expliques : https://vuejs.org/v2/guide/installation.html.
+Le site de Vue expose toutes les possibilités d'installation et les expliques : https://v3.vuejs.org/guide/installation.html.
 
 Vue.js peut être utilisé de plusieurs manières. Seul pour gérer toute l'application (avec Vue Router, VueX, etc.) ou en combinaison avec un autre Framework. Dans ce deuxième cas de figure Vue s'occupera de la partie FrontEnd et l'autre Framework du BackEnd.
 
