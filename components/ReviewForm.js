@@ -1,4 +1,5 @@
 app.component('review-form', {
+  emits: ["review-submitted"],
   template:
   /*html*/
   `
@@ -51,7 +52,7 @@ app.component('review-form', {
 
       this.name = ''
       this.review = ''
-      this.rating = ''
+      this.rating = null
     }
   }
 });

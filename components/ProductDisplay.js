@@ -5,6 +5,7 @@ app.component('product-display', {
       required: true,
     }
   },
+  emits: ["add-to-cart"],
   template: 
   /*html*/
   `
