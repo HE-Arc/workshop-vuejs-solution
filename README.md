@@ -30,7 +30,7 @@ Si VSCode est utilisé installer `es6-string-html`, nous en aurons besoin plus t
 
 ## CDN Vue
 
-Copier coller le CDN Vue sur la page de Vue 2 dans la balise head de l'html, nous utiliserons un version précise, donc voici le CDN pour cette version.
+Copier coller le CDN Vue sur la page de Vue 3 dans la balise head de l'html, nous utiliserons un version précise, donc voici le CDN pour cette version.
 
 ```html
 <script src="https://unpkg.com/vue@3.2.20"></script>
@@ -72,7 +72,7 @@ const app = Vue.createApp({
 });
 ```
 
-> {{}} interprète se qui se trouve dedans, cela permet d'effectuer des opérations en tout genre (concaténation, opération ternaire, etc...)
+> {{}} interprète ce qui se trouve dedans, cela permet d'effectuer des opérations en tout genre (concaténation, opération ternaire, etc...)
 
 Il est possible d'interagir avec Vue depuis la console du navigateur en écrivant par exemple 
 
