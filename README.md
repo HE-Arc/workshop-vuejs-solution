@@ -1,3 +1,11 @@
+# IMPORTANT, à lire avant de poursuivre
+
+Ce projet n'est plus utilisé. Si vous cherchez la solution du workshop Vuejs, elle se trouve maintenant directement dans le projet du workshop de base.
+
+Allez voir le README du projet de base pour voir ou est stocké la solution.
+
+---
+
 # 0. Explication
 
 Ce README retrace l'intégralité du projet et permet de recréer le projet depuis 0 à partir du projet de base donnée.
